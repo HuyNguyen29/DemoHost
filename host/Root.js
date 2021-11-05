@@ -5,6 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ChunkManager } from "@callstack/repack/client";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Host from "./Host";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,7 +64,12 @@ function App1Wrapper({ navigation, route }) {
     <React.Suspense
       fallback={<Text style={{ textAlign: "center" }}>Loading...</Text>}
     >
-      <App1 navigation={navigation} route={route} Stack={Stack} />
+      <App1
+        navigationHost={navigation}
+        routeHost={route}
+        createNativeStackNavigator={createNativeStackNavigator}
+        Stack={Stack}
+      />
     </React.Suspense>
   );
 }
@@ -72,7 +79,12 @@ function App2Wrapper({ navigation, route }) {
     <React.Suspense
       fallback={<Text style={{ textAlign: "center" }}>Loading...</Text>}
     >
-      <App2 navigation={navigation} route={route} Stack={Stack} />
+      <App2
+        navigationHost={navigation}
+        routeHost={route}
+        createNativeStackNavigator={createNativeStackNavigator}
+        Stack={Stack}
+      />
     </React.Suspense>
   );
 }
@@ -81,17 +93,19 @@ const Tab = createBottomTabNavigator();
 
 export function Root() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-        initialRouteName="Host"
-      >
-        <Tab.Screen name="Host" component={Host} />
-        <Tab.Screen name="App1" component={App1Wrapper} />
-        <Tab.Screen name="App2" component={App2Wrapper} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+          initialRouteName="Host"
+        >
+          <Tab.Screen name="Host" component={Host} />
+          <Tab.Screen name="App1" component={App1Wrapper} />
+          <Tab.Screen name="App2" component={App2Wrapper} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }

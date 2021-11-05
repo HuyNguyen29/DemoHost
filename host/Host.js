@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
+import { useSelector } from "react-redux";
 
 const Section = ({ children, title }) => {
   const isDarkMode = useColorScheme() === "dark";
@@ -42,13 +43,16 @@ const Section = ({ children, title }) => {
 export default function Host(props) {
   const isDarkMode = useColorScheme() === "dark";
 
+  const testReducer = useSelector((store) => store.testReducer);
+
+  console.log(`%c testReducer HOST`, testReducer);
+
   const backgroundStyle = {
     flex: 1,
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   useEffect(() => {
-    console.log(`%c props.route 1`, props.route);
     if (props?.data) {
       props.navigation.navigate("Screen2");
     }

@@ -5,24 +5,29 @@ import { View, Text } from "react-native";
 
 import Screen1 from "./Screen1";
 import Screen2 from "./Screen2";
-
-// const Stack = createNativeStackNavigator();
+import { Provider } from "react-redux";
+import { store } from "./store";
+import { testRedux } from "./redux/actionTest";
 
 function App(props) {
-  const Stack = props.Stack;
-  global.data = props;
+  const StackMiniApp2 = props.createNativeStackNavigator();
+
+  React.useEffect(() => {
+    if (props?.routeHost?.params?.screen2) {
+      store.dispatch(testRedux(props.routeHost));
+    }
+  }, [props?.routeHost?.params?.id]);
   return (
-    // <NavigationContainer>
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="Screen1" component={Screen1} />
-      <Stack.Screen name="Screen2" component={Screen2} />
-    </Stack.Navigator>
-    // </NavigationContainer> */}
-    // <Screen1 {...props} />
+    <Provider store={store}>
+      <StackMiniApp2.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <StackMiniApp2.Screen name="Screen1" component={Screen1} />
+        <StackMiniApp2.Screen name="Screen2" component={Screen2} />
+      </StackMiniApp2.Navigator>
+    </Provider>
   );
 }
 

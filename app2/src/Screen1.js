@@ -8,6 +8,7 @@ import {
   useColorScheme,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 
@@ -41,7 +42,8 @@ const Section = ({ children, title }) => {
 
 export default function Screen1(props) {
   const isDarkMode = useColorScheme() === "dark";
-  const [screen2, setScreen2] = useState(global?.data?.route?.params?.screen2);
+
+  const testReducer = useSelector((store) => store.testReducer);
 
   const backgroundStyle = {
     flex: 1,
@@ -49,13 +51,12 @@ export default function Screen1(props) {
   };
 
   useEffect(() => {
-    if (screen2) {
+    if (testReducer?.data?.params?.screen2) {
       setTimeout(() => {
         props.navigation.navigate("Screen2");
-        setScreen2(false);
       }, 500);
     }
-  }, [props.navigation, screen2]);
+  }, [testReducer]);
 
   return (
     <SafeAreaView style={backgroundStyle}>

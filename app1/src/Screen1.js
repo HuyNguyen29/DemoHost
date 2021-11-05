@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StatusBar,
@@ -41,6 +41,7 @@ const Section = ({ children, title }) => {
 
 export default function Screen1(props) {
   const isDarkMode = useColorScheme() === "dark";
+  const [id, setID] = useState(0);
 
   const backgroundStyle = {
     flex: 1,
@@ -48,7 +49,6 @@ export default function Screen1(props) {
   };
 
   useEffect(() => {
-    console.log(`%c props.route 1`, props.route);
     if (props?.data) {
       props.navigation.navigate("Screen2");
     }
@@ -99,7 +99,11 @@ export default function Screen1(props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate("App2", { screen2: true });
+              props.navigation.navigate("App2", {
+                screen2: true,
+                id: id,
+              });
+              setID(id + 1);
             }}
             style={{
               marginTop: 10,
